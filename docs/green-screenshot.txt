@@ -1,0 +1,5 @@
+  console.log
+    ◇ injected env (7) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+      at _log (C:\Users\HP\OneDrive - ACADEMIE IVOIRIENNE DES SCIENCES ( USJCI )../../../../../../Bureau/TaskFlow/taskflow01/node_modules/dotenv/lib/main.js:131:11)
+

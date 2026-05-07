@@ -16,6 +16,7 @@ const express = require('express');
 const authService               = require('./auth.service');
 const { signupSchema, loginSchema, validate } = require('./auth.validation');
 const authenticate              = require('../middleware/authenticate');
+const { authLimiter } = require('../middleware/rate-limit');
 
 const router = express.Router();
 
@@ -60,7 +61,7 @@ function clearSessionCookie(res) {
 // POST /api/auth/signup
 // ---------------------------------------------------------------------------
 
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', authLimiter, async (req, res, next) => {
   try {
     const { value, error } = validate(signupSchema, req.body);
     if (error) return res.status(422).json(error);
@@ -79,7 +80,7 @@ router.post('/signup', async (req, res, next) => {
 // POST /api/auth/login
 // ---------------------------------------------------------------------------
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', authLimiter, async (req, res, next) => {
   try {
     const { value, error } = validate(loginSchema, req.body);
     if (error) return res.status(422).json(error);

@@ -29,6 +29,9 @@ levels (low / medium / high).
 1. Test-first for every new endpoint: write the failing test (Red) before any handler code.
 2. Tests run against a separate test database (taskflow_test). Never the dev database.
 3. Coverage threshold for new files in this checkpoint: 80% lines, 70% branches.
+4. E2E tests cover critical user journeys: signup, login, create task, view task.
+5. E2E tests run against a fresh test database, isolated from dev and unit-test DB.
+6. Each E2E test is independent: no shared state between tests, reset fixtures in beforeEach.
 
 ## Frontend Rules
 1. One component per file. Default export. PascalCase filename.

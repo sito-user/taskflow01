@@ -1,0 +1,47 @@
+npm warn config production Use `--omit=dev` instead.
+# npm audit report
+
+tar  <=7.5.10
+Severity: high
+node-tar Vulnerable to Arbitrary File Creation/Overwrite via Hardlink Path Traversal - https://github.com/advisories/GHSA-34x7-hfp2-rc4v
+node-tar is Vulnerable to Arbitrary File Overwrite and Symlink Poisoning via Insufficient Path Sanitization - https://github.com/advisories/GHSA-8qq5-rm4j-mr97
+Arbitrary File Read/Write via Hardlink Target Escape Through Symlink Chain in node-tar Extraction - https://github.com/advisories/GHSA-83g3-92jg-28cx
+tar has Hardlink Path Traversal via Drive-Relative Linkpath - https://github.com/advisories/GHSA-qffp-2rhf-9h96
+node-tar Symlink Path Traversal via Drive-Relative Linkpath - https://github.com/advisories/GHSA-9ppj-qmqm-q256
+Race Condition in node-tar Path Reservations via Unicode Ligature Collisions on macOS APFS - https://github.com/advisories/GHSA-r6q2-hw4h-h46w
+fix available via `npm audit fix`
+node_modules/tar
+  @mapbox/node-pre-gyp  <=1.0.11
+  Depends on vulnerable versions of tar
+  node_modules/@mapbox/node-pre-gyp
+
+2 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+up to date, audited 449 packages in 2s
+
+57 packages are looking for funding
+  run `npm fund` for details
+
+# npm audit report
+
+tar  <=7.5.10
+Severity: high
+node-tar Vulnerable to Arbitrary File Creation/Overwrite via Hardlink Path Traversal - https://github.com/advisories/GHSA-34x7-hfp2-rc4v
+node-tar is Vulnerable to Arbitrary File Overwrite and Symlink Poisoning via Insufficient Path Sanitization - https://github.com/advisories/GHSA-8qq5-rm4j-mr97
+Arbitrary File Read/Write via Hardlink Target Escape Through Symlink Chain in node-tar Extraction - https://github.com/advisories/GHSA-83g3-92jg-28cx
+tar has Hardlink Path Traversal via Drive-Relative Linkpath - https://github.com/advisories/GHSA-qffp-2rhf-9h96
+node-tar Symlink Path Traversal via Drive-Relative Linkpath - https://github.com/advisories/GHSA-9ppj-qmqm-q256
+Race Condition in node-tar Path Reservations via Unicode Ligature Collisions on macOS APFS - https://github.com/advisories/GHSA-r6q2-hw4h-h46w
+fix available via `npm audit fix`
+node_modules/tar
+  @mapbox/node-pre-gyp  <=1.0.11
+  Depends on vulnerable versions of tar
+  node_modules/@mapbox/node-pre-gyp
+
+2 high severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix

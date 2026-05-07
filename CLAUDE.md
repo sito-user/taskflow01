@@ -46,3 +46,12 @@ levels (low / medium / high).
 ## Always-On Behaviors
 1. Read CLAUDE.md at the start of every conversation before generating any code.
 2. When asked to plan, always output a numbered checklist before generating code.
+
+## Security Rules
+1. Authentication: JWT in httpOnly + Secure + SameSite=Lax cookies. Never localStorage.
+2. Password hashing: bcrypt with cost factor 12. Never MD5, SHA256, or plain.
+3. Rate limit on auth endpoints: 5 attempts per 15 minutes per IP.
+4. Validate ALL user input with Joi at the route boundary. Never trust req.body.
+5. Security headers via Helmet: CSP, HSTS, X-Frame-Options, X-Content-Type-Options.
+6. CORS: explicit allow-list of origins. No wildcard in production.
+7. Secrets via environment variables only. Never commit .env. Never hardcode.

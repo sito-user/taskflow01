@@ -4,7 +4,7 @@ import styles from './TaskCreate.module.css';
 
 const INITIAL = { title: '', description: '', status: 'todo', priority: 'medium', due_date: '' };
 
-export default function TaskCreate({ project_id, onCreated }) {
+export default function TaskCreate({ projectId, onCreated }) {
   const [fields, setFields]           = useState(INITIAL);
   const [fieldErrors, setFieldErrors] = useState({});
   const [banner, setBanner]           = useState(null);
@@ -28,11 +28,14 @@ export default function TaskCreate({ project_id, onCreated }) {
     const clientErrors = validate();
     if (clientErrors) { setFieldErrors(clientErrors); return; }
     setLoading(true);
-    const { data, error } = await create({ ...fields, project_id });
-    setLoading(false);
-    if (!error) { setFields(INITIAL); setFieldErrors({}); onCreated(data); return; }
-    if (error.fields) { setFieldErrors(error.fields); }
-    else { setBanner(error.message ?? 'An unexpected error occurred.'); }
+    try {
+      const { data, error } = await create({ ...fields, project_id: projectId });
+      if (!error) { setFields(INITIAL); setFieldErrors({}); onCreated(data); return; }
+      if (error.fields) { setFieldErrors(error.fields); }
+      else { setBanner(error.message ?? 'An unexpected error occurred.'); }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

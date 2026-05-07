@@ -1,0 +1,13 @@
+                                                                          QUERY PLAN                                                                          
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=8.17..8.18 rows=1 width=474) (actual time=0.181..0.183 rows=5 loops=1)
+   ->  Sort  (cost=8.17..8.18 rows=1 width=474) (actual time=0.179..0.180 rows=5 loops=1)
+         Sort Key: created_at DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  Index Scan using idx_tasks_org_project_status on tasks  (cost=0.14..8.16 rows=1 width=474) (actual time=0.037..0.040 rows=5 loops=1)
+               Index Cond: ((organization_id = 'a1000000-0000-4000-8000-000000000001'::uuid) AND (project_id = 'c1000000-0000-4000-8000-000000000001'::uuid))
+               Filter: (deleted_at IS NULL)
+ Planning Time: 3.317 ms
+ Execution Time: 0.299 ms
+(9 rows)
+

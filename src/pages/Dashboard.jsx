@@ -7,7 +7,7 @@ import '../styles/auth.css';
 import TaskCreate from '../components/TaskCreate';
 import TaskList from '../components/TaskList';
 
-const PROJECT_ID = 'c1000000-0000-4000-8000-000000000001';
+const PROJECT_ID = '00000000-1234-4000-8000-000000000002';
 
 function getInitial(email) {
   return email ? email[0].toUpperCase() : '?';
@@ -19,6 +19,8 @@ export default function Dashboard() {
   const [user, setUser]       = useState(null);
   const [error, setError]     = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(0);
+
 
   useEffect(() => {
     let cancelled = false;

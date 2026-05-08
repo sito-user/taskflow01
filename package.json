@@ -5,7 +5,8 @@
     "main": "src/app.js",
     "scripts": {
         "start": "node src/app.js",
-        "test": "jest --runInBand"
+        "test": "jest --runInBand",
+        "test:e2e": "NODE_ENV=test_e2e npx playwright test"
     },
     "jest": {
         "testEnvironment": "node",

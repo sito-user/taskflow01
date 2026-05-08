@@ -17,6 +17,11 @@ module.exports = {
     connection: process.env.DATABASE_URL_TEST,
     pool: { min: 1, max: 5 },
   },
+  test_e2e: {
+  ...baseConfig,
+  connection: process.env.DATABASE_URL_TEST_E2E,
+  pool: { min: 1, max: 5 },
+},
   production: {
     ...baseConfig,
     connection: { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } },

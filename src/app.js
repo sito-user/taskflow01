@@ -38,4 +38,13 @@ app.use('/api/tasks', taskRoutes);
 // 6. Error handler — LAST
 app.use(errorHandler);
 
+// Test-only utilities
+if (process.env.NODE_ENV === 'test_e2e') {
+  const testResetRouter = require('./test-utils/reset');
+  app.use('/api/test', testResetRouter);
+  console.info('[app] test-utils router mounted at /api/test');
+}
+
 module.exports = app;
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

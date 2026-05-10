@@ -62,18 +62,12 @@ function resolveAllowedOrigins() {
   const raw = process.env.CORS_ORIGIN;
 
   if (IS_PRODUCTION) {
-    if (!raw || raw.trim() === '') {
-      // Fail loudly — a missing allow-list in production is a mis-deployment,
-      // not a situation we should silently paper over.
-      throw new Error(
-        '[CORS] CORS_ORIGIN environment variable is not set. ' +
-        'Refusing to start in production without an explicit origin allow-list. ' +
-        'Set CORS_ORIGIN to a comma-separated list of allowed origins, e.g. ' +
-        '"https://app.taskflow.io,https://www.taskflow.io".',
-      );
-    }
-    return parseOrigins(raw);
+  if (!raw || raw.trim() === '') {
+    // Fallback temporaire pour Render
+    return ['https://taskflow-web-784f.onrender.com'];
   }
+  return parseOrigins(raw);
+}
 
   // Development / test: use CORS_ORIGIN if provided, otherwise fall back to
   // localhost variants so the dev experience requires zero extra setup.

@@ -11,6 +11,8 @@ const authRoutes   = require('./auth/auth.controller');
 const { errorHandler } = require('./middleware/error-handler');
 const { apiLimiter }   = require('./middleware/rate-limit');
 const healthcheck = require('./observability/healthcheck');
+const logger        = require('./observability/logger');
+const correlationId = require('./middleware/correlation-id');
 
 const app = express();
 

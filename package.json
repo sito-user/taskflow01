@@ -4,12 +4,12 @@
     "description": "TaskFlow multi-tenant task management SaaS",
     "main": "src/app.js",
     "scripts": {
-    "start": "node src/app.js",
-    "build": "vite build",
-    "dev": "vite",
-    "test": "jest --runInBand",
-    "test:e2e": "NODE_ENV=test_e2e npx playwright test"
-},
+        "start": "node src/app.js",
+        "build": "vite build",
+        "dev": "vite",
+        "test": "jest --runInBand",
+        "test:e2e": "NODE_ENV=test_e2e npx playwright test"
+    },
     "jest": {
         "testEnvironment": "node",
         "setupFiles": [
@@ -28,6 +28,7 @@
         "jsonwebtoken": "^9.0.3",
         "knex": "^3.0.0",
         "pg": "^8.0.0",
+        "prop-types": "^15.8.1",
         "react-router-dom": "^7.15.0",
         "uuid": "^9.0.0"
     },

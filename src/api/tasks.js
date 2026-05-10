@@ -20,8 +20,8 @@ async function apiFetch(path, options = {}) {
 
 export async function list({ projectId }) {
   try {
-    const res = await fetch(`http://localhost:4000/api/tasks?project_id=${projectId}`, {
-      credentials: 'include',
+const res = await fetch(`${BASE_URL}/api/tasks?project_id=${projectId}`, {
+        credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     });
     const body = await res.json().catch(() => null);

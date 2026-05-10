@@ -16,6 +16,8 @@ const correlationId = require('./middleware/correlation-id');
 
 const app = express();
 
+app.use(correlationId);
+
 app.use(healthcheck);
 
 // 1. Security headers — FIRST

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, checkpoint-2]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: taskflow
+          POSTGRES_PASSWORD: taskflow123
+          POSTGRES_DB: taskflow_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL_TEST: postgres://taskflow:taskflow123@localhost:5432/taskflow_test
+      JWT_SECRET: ci_test_jwt_secret_min_32_chars_for_validation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run migrations
+        run: NODE_ENV=test npx knex migrate:latest
+
+      - name: Run unit + integration tests
+        run: NODE_ENV=test npx jest --coverage

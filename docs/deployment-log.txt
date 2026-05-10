@@ -1,0 +1,13 @@
+# TaskFlow — Deployment Log
+
+## Backend API (Render)
+URL: https://taskflow-api01.onrender.com
+Healthcheck: https://taskflow-api01.onrender.com/healthz
+Platform: Render.com
+Branch: checkpoint-2
+Date: 2026-05-10
+
+## Database
+Platform: Render PostgreSQL (Free)
+Region: Frankfurt (EU Central)
+Migrations: 3 migrations applied

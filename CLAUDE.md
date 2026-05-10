@@ -58,3 +58,10 @@ levels (low / medium / high).
 5. Security headers via Helmet: CSP, HSTS, X-Frame-Options, X-Content-Type-Options.
 6. CORS: explicit allow-list of origins. No wildcard in production.
 7. Secrets via environment variables only. Never commit .env. Never hardcode.
+
+## Deployment Rules
+1. Multi-stage Dockerfiles: separate build stage from runtime stage. Final image uses a slim base (alpine).
+2. Run as non-root user inside containers (USER node).
+3. Healthcheck endpoint at GET /healthz returning 200 + JSON status.
+4. Render.com is the production platform.
+5. No secrets in Dockerfile. All via environment variables.

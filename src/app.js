@@ -10,8 +10,11 @@ const taskRoutes   = require('./routes/tasks');
 const authRoutes   = require('./auth/auth.controller');
 const { errorHandler } = require('./middleware/error-handler');
 const { apiLimiter }   = require('./middleware/rate-limit');
+const healthcheck = require('./observability/healthcheck');
 
 const app = express();
+
+app.use(healthcheck);
 
 // 1. Security headers — FIRST
 app.use(securityHeaders);

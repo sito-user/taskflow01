@@ -1,17 +1,22 @@
-# Auto-debrief Checkpoint 1
+# Auto-debrief Checkpoint 2
 
-## 1. Qu'est-ce qui a cassé en premier, et comment l'ai-je trouvé ?
-Les fichiers VS Code ne se sauvegardaient pas correctement dans le repo Git.
-J'ai découvert le problème quand git status retournait "nothing to commit"
-malgré les modifications visibles dans l'éditeur. Solution : utiliser
-cat > fichier << 'EOF' directement dans le terminal.
+## 1. Quel concept des Modules 6-10 ai-je le moins compris ?
+Le pipeline d'agregation MongoDB et les configurations CORS en production 
+ont ete les plus difficiles a apprehender. Je dois relire la documentation 
+sur SameSite cookies et les headers HTTP de securite.
 
-## 2. Quelle règle du CLAUDE.md Claude a-t-il violée aujourd'hui, et comment l'ai-je attrapée ?
-Le service.js généré utilisait le package uuid (ES modules) incompatible avec Jest.
-Remplacé par crypto.randomUUID() natif de Node.js. Détecté lors du premier
-lancement des tests qui retournait SyntaxError: Unexpected token 'export'.
+## 2. Quelle erreur aurait pu etre catastrophique ?
+Le secret JWT_SECRET aurait pu etre commite dans le repo Git. 
+C'est la regle absolue : jamais de secrets dans le code.
+Le endpoint /api/test/reset-db aurait pu etre expose en production 
+sans la protection NODE_ENV === 'test_e2e'.
 
-## 3. Qu'est-ce que je couperais de mon PRD si je devais refaire cet atelier en 3 heures ?
-Je garderais uniquement POST /api/tasks et GET /api/tasks/:id avec TDD strict,
-et un seul composant frontend (TaskList). PATCH, DELETE, TaskCreate et l'audit UI
-seraient reportés au parcours senior.
+## 3. Si je refaisais ce Checkpoint 2 en 3 heures, je couperais quoi ?
+Je couperais le cache Redis et les tests E2E complexes pour me concentrer 
+sur le deploiement et la securite de base.
+
+## 4. Quel module sera utile dans tous mes projets futurs ?
+- Transferable : JWT auth, Docker multi-stage, CI/CD GitHub Actions, 
+  logging structure JSON
+- Specifique a TaskFlow : le modele multi-tenant, les invariants 
+  d'isolation par organisation

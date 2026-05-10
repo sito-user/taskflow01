@@ -1,6 +1,15 @@
 'use strict';
-
 const service = require('./service');
+
+async function list(req, res, next) {
+  try {
+    const { project_id } = req.query;
+    const tasks = await service.listForUser(req.user, { projectId: project_id }, req.db);
+    return res.status(200).json({ data: tasks });
+  } catch (err) {
+    return next(err);
+  }
+}
 
 async function create(req, res, next) {
   try {
@@ -20,4 +29,4 @@ async function getById(req, res, next) {
   }
 }
 
-module.exports = { create, getById };
+module.exports = { list, create, getById };

@@ -2,6 +2,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './styles/tokens.css';
 
 import Dashboard from './pages/Dashboard';
 import Login     from './pages/Login';

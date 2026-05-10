@@ -21,18 +21,19 @@ Badge.propTypes = { label: PropTypes.string.isRequired, color: PropTypes.string.
 export default function TaskCard({ task, onClick }) {
   const { title, status = 'todo', priority = 'low', assigned_to, due_date } = task;
   const isClickable = typeof onClick === 'function';
-  const assignedLabel = assigned_to || 'Unassigned';
+const assignedLabel = assigned_to || task.created_by_name || 'Me';
   const dueDateLabel = formatDate(due_date);
 
   return (
     <article
-      className={`${styles.card} ${isClickable ? styles.clickable : ''}`}
-      onClick={isClickable ? onClick : undefined}
-      role={isClickable ? 'button' : undefined}
-      tabIndex={isClickable ? 0 : undefined}
-      aria-label={`Task: ${title}. Status: ${STATUS_LABEL[status]}. Priority: ${priority}.`}
-      onKeyDown={isClickable ? (e) => e.key === 'Enter' && onClick(e) : undefined}
-    >
+  className={`${styles.card} ${isClickable ? styles.clickable : ''}`}
+  data-priority={priority}
+  onClick={isClickable ? onClick : undefined}
+  role={isClickable ? 'button' : undefined}
+  tabIndex={isClickable ? 0 : undefined}
+  aria-label={`Task: ${title}. Status: ${STATUS_LABEL[status]}. Priority: ${priority}.`}
+  onKeyDown={isClickable ? (e) => e.key === 'Enter' && onClick(e) : undefined}
+>
       <header className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
         <div className={styles.badges}>

@@ -18,8 +18,19 @@ async function apiFetch(path, options = {}) {
   }
 }
 
-export function list({ projectId }) {
-  return apiFetch(`/api/tasks?project_id=${projectId}`);
+export async function list({ projectId }) {
+  try {
+    const res = await fetch(`http://localhost:4000/api/tasks?project_id=${projectId}`, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const body = await res.json().catch(() => null);
+    if (!res.ok) return { data: null, error: body || { message: `HTTP ${res.status}` } };
+    // L'API retourne { data: [...] }, on extrait le tableau
+    return { data: body.data ?? body ?? [], error: null };
+  } catch (err) {
+    return { data: null, error: { message: err.message } };
+  }
 }
 
 export function create(payload) {

@@ -67,10 +67,10 @@ router.post('/signup', authLimiter, async (req, res, next) => {
     if (error) return res.status(422).json(error);
 
     const { email, password, organization_name } = value;
-    const { user, token } = await authService.signup(email, password, organization_name);
+    const { user, token, project_id } = await authService.signup(email, password, organization_name);
 
-    setSessionCookie(res, req, token);
-    return res.status(201).json({ user });
+setSessionCookie(res, req, token);
+return res.status(201).json({ user, project_id });
   } catch (err) {
     next(err);
   }
@@ -108,9 +108,21 @@ router.post('/logout', (_req, res) => {
 // GET /api/auth/me
 // ---------------------------------------------------------------------------
 
-router.get('/me', authenticate, (req, res) => {
-  // authenticate middleware has already attached req.user
-  return res.status(200).json({ user: req.user });
+router.get('/me', authenticate, async (req, res) => {
+  try {
+    const db = require('../db');
+    const project = await db('projects')
+      .whereNull('deleted_at')
+      .where({ organization_id: req.user.organization_id })
+      .first(['id']);
+    
+    return res.status(200).json({ 
+      user: req.user,
+      project_id: project?.id ?? null
+    });
+  } catch (err) {
+    return res.status(200).json({ user: req.user, project_id: null });
+  }
 });
 
 // ---------------------------------------------------------------------------

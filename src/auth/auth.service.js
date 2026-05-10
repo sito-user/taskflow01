@@ -35,7 +35,7 @@ async function signup(email, password, organization_name) {
 
   const password_hash = await bcrypt.hash(password, BCRYPT_COST);
 
-  const { user } = await db.transaction(async (trx) => {
+  const { user, project_id } = await db.transaction(async (trx) => {
     const orgId = uuidv4();
     const now   = new Date();
 
@@ -59,11 +59,22 @@ async function signup(email, password, organization_name) {
       })
       .returning(['id','organization_id','email','role','created_at','updated_at','deleted_at']);
 
-    return { user };
+    const projectId = uuidv4();
+    await trx('projects').insert({
+      id:              projectId,
+      organization_id: orgId,
+      owner_id:        userId,
+      name:            'Default Project',
+      created_at:      now,
+      updated_at:      now,
+      deleted_at:      null,
+    });
+
+    return { user, project_id: projectId };
   });
 
   const token = jwt.sign({ user_id: user.id, organization_id: user.organization_id, role: user.role });
-  return { user: sanitiseUser(user), token };
+  return { user: sanitiseUser(user), token, project_id };
 }
 
 async function login(email, password) {

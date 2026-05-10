@@ -1,21 +1,16 @@
-// src/api/auth.js
-
-const BASE = '/api/auth';
+const BASE = 'http://localhost:4000/api/auth';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
-    credentials: 'include',          // send/receive httpOnly cookies
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
-
   const body = await res.json().catch(() => ({}));
-
   if (!res.ok) {
     const message = body?.message || `Request failed (${res.status})`;
     throw new Error(message);
   }
-
   return body;
 }
 

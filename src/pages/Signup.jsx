@@ -27,7 +27,7 @@ export default function Signup() {
 
     try {
       await signup(fields);
-      navigate('/dashboard');
+      window.location.href = '/dashboard';
     } catch (err) {
       setError(err.message);
     } finally {

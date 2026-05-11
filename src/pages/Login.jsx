@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       await login(fields);
-      navigate('/dashboard');
+      window.location.href = '/dashboard';
     } catch (err) {
       setError(err.message);
     } finally {

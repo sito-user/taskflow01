@@ -1,4 +1,6 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+// Relative URL — proxied to the API by vite (dev) or _redirects (prod).
+// See src/api/auth.js for the full explanation.
+const BASE_URL = '';
 
 async function apiFetch(path, options = {}) {
   try {
@@ -20,13 +22,12 @@ async function apiFetch(path, options = {}) {
 
 export async function list({ projectId }) {
   try {
-const res = await fetch(`${BASE_URL}/api/tasks?project_id=${projectId}`, {
-        credentials: 'include',
+    const res = await fetch(`${BASE_URL}/api/tasks?project_id=${projectId}`, {
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     });
     const body = await res.json().catch(() => null);
     if (!res.ok) return { data: null, error: body || { message: `HTTP ${res.status}` } };
-    // L'API retourne { data: [...] }, on extrait le tableau
     return { data: body.data ?? body ?? [], error: null };
   } catch (err) {
     return { data: null, error: { message: err.message } };

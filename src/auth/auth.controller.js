@@ -25,36 +25,38 @@ const router = express.Router();
 // ---------------------------------------------------------------------------
 
 const COOKIE_NAME = 'taskflow_session';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 /**
- * Cookie options aligned with CLAUDE.md Security Rule 1:
- * httpOnly, Secure (production only), SameSite=Lax.
+ * Cookie options aligned with CLAUDE.md Security Rule 1.
  *
- * We do NOT use SameSite=Strict because that breaks OAuth redirect flows
- * and external deep-links — Lax is the right default for a SaaS app.
+ * In production we MUST use SameSite=None + Secure because the SPA and the
+ * API live on different subdomains of onrender.com (treated as cross-site
+ * by browsers because onrender.com is on the Public Suffix List).
+ *
+ * In development we use SameSite=Lax over plain HTTP.
  */
-function cookieOptions(req) {
+function baseCookieOptions() {
   return {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge:   7 * 24 * 60 * 60 * 1000,
+    secure:   IS_PRODUCTION,
+    sameSite: IS_PRODUCTION ? 'none' : 'lax',
     path:     '/',
   };
 }
 
-function setSessionCookie(res, req, token) {
-  res.cookie(COOKIE_NAME, token, cookieOptions(req));
+function setSessionCookie(res, _req, token) {
+  res.cookie(COOKIE_NAME, token, {
+    ...baseCookieOptions(),
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 }
 
 function clearSessionCookie(res) {
-  // Clearing requires matching path; maxAge:0 / expires in the past clears it.
-  res.clearCookie(COOKIE_NAME, {
-    httpOnly: true,
-    secure:   process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path:     '/',
-  });
+  // IMPORTANT: clearCookie must use the SAME attributes as the set call
+  // (httpOnly, secure, sameSite, path) or the browser silently ignores the
+  // Set-Cookie response — which is exactly what was breaking logout in prod.
+  res.clearCookie(COOKIE_NAME, baseCookieOptions());
 }
 
 // ---------------------------------------------------------------------------
@@ -69,8 +71,8 @@ router.post('/signup', authLimiter, async (req, res, next) => {
     const { email, password, organization_name } = value;
     const { user, token, project_id } = await authService.signup(email, password, organization_name);
 
-setSessionCookie(res, req, token);
-return res.status(201).json({ user, project_id });
+    setSessionCookie(res, req, token);
+    return res.status(201).json({ user, project_id });
   } catch (err) {
     next(err);
   }
@@ -115,8 +117,8 @@ router.get('/me', authenticate, async (req, res) => {
       .whereNull('deleted_at')
       .where({ organization_id: req.user.organization_id })
       .first(['id']);
-    
-    return res.status(200).json({ 
+
+    return res.status(200).json({
       user: req.user,
       project_id: project?.id ?? null
     });
@@ -143,11 +145,10 @@ router.use((err, req, res, next) => {
     return res.status(401).json({
       status:  401,
       error:   'unauthorized',
-      message: err.message, // always "Invalid credentials"
+      message: err.message,
     });
   }
 
-  // Unhandled — forward to global error handler
   next(err);
 });
 

@@ -16,6 +16,15 @@ const correlationId = require('./middleware/correlation-id');
 
 const app = express();
 
+// ---------------------------------------------------------------------------
+// Trust the Render reverse proxy (FIRST — must come before rate-limit, cookies)
+// ---------------------------------------------------------------------------
+// Render terminates TLS at its edge and forwards via X-Forwarded-* headers.
+// Without this, every request looks like it comes from the same proxy IP and
+// the rate limiter locks out *all* users after a handful of failed attempts.
+// `1` = trust the first hop only (Render's edge proxy).
+app.set('trust proxy', 1);
+
 app.use(correlationId);
 
 app.use(healthcheck);
@@ -53,5 +62,14 @@ if (process.env.NODE_ENV === 'test_e2e') {
 }
 
 module.exports = app;
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// ---------------------------------------------------------------------------
+// Boot the HTTP server when this file is the entry point (e.g. `node src/app.js`
+// or Render's default start command). When app.js is `require()`-d by tests or
+// by server.js, `require.main !== module` and we skip listening — that avoids
+// the double-listen / EADDRINUSE crash you had before.
+// ---------------------------------------------------------------------------
+if (require.main === module) {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => console.log(`TaskFlow API listening on port ${PORT}`));
+}

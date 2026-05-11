@@ -34,10 +34,10 @@ export default function Dashboard() {
     return () => { cancelled = true; };
   }, [navigate]);
 
-  async function handleLogout() {
-    try { await logout(); } catch {}
-    navigate('/', { replace: true });
-  }
+async function handleLogout() {
+  try { await logout(); } catch {}
+  window.location.href = '/login';
+}
 
   if (loading) {
     return (

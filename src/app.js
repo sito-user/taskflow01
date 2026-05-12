@@ -61,6 +61,7 @@ if (process.env.NODE_ENV === 'test_e2e') {
   console.info('[app] test-utils router mounted at /api/test');
 }
 
+// src/app.js
 module.exports = app;
 
 // ---------------------------------------------------------------------------
@@ -69,7 +70,3 @@ module.exports = app;
 // by server.js, `require.main !== module` and we skip listening — that avoids
 // the double-listen / EADDRINUSE crash you had before.
 // ---------------------------------------------------------------------------
-if (require.main === module) {
-  const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => console.log(`TaskFlow API listening on port ${PORT}`));
-}

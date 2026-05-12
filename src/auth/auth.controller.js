@@ -53,10 +53,11 @@ function setSessionCookie(res, _req, token) {
 }
 
 function clearSessionCookie(res) {
-  // IMPORTANT: clearCookie must use the SAME attributes as the set call
-  // (httpOnly, secure, sameSite, path) or the browser silently ignores the
-  // Set-Cookie response — which is exactly what was breaking logout in prod.
-  res.clearCookie(COOKIE_NAME, baseCookieOptions());
+  res.clearCookie(COOKIE_NAME, {
+    httpOnly: true,
+    secure:   process.env.NODE_ENV === 'production',
+sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',    path:     '/',
+  });
 }
 
 // ---------------------------------------------------------------------------

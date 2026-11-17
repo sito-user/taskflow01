@@ -60,4 +60,4 @@ npm run test:e2e    # parcours complets dans le navigateur
 
 ## Auteure
 
-Aya Aidibi, [aya-portefolio.netlify.app](https://aya-portefolio.netlify.app)
+Aya Aidibi, [aya-aidibi-portfolio.netlify.app](https://aya-aidibi-portfolio.netlify.app)
